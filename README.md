@@ -24,3 +24,14 @@ If you are in Organ mode, drawbars will output the messages we need in values fr
 If you are in Piano or Synth mode, only _some_ drawbars work (the ones that operate as synth controls, e.g. cutoff and resonance) and will output the full 0-127 range of values for the working faders. But in Piano or Synth mode, you _do_ get correct note velocity!
 
 To sum up: to get _both_ correct note velocity _and_ all drawbar controls (at the expense of full 0-127 fader resolution), you need to be in Organ and Piano mode at the same time. 😅
+
+
+# MIDI Mapping
+
+* 9 Drawbars: MIDI CC 12-20
+* 5 Knobs ("Reverb" not working yet):
+** "Overdrive": MIDI CC 75
+** "Tone": MIDI CC 76
+** "Compressor": MIDI CC 77
+** "MFX": MIDI CC 78
+** "Delay": MIDI CC 79

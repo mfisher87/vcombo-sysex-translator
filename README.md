@@ -30,8 +30,8 @@ To sum up: to get _both_ correct note velocity _and_ all drawbar controls (at th
 
 * 9 Drawbars: MIDI CC 12-20
 * 5 Knobs ("Reverb" not working yet):
-** "Overdrive": MIDI CC 75
-** "Tone": MIDI CC 76
-** "Compressor": MIDI CC 77
-** "MFX": MIDI CC 78
-** "Delay": MIDI CC 79
+    * "Overdrive": MIDI CC 75
+    * "Tone": MIDI CC 76
+    * "Compressor": MIDI CC 77
+    * "MFX": MIDI CC 78
+    * "Delay": MIDI CC 79

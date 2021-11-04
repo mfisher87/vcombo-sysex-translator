@@ -1,10 +1,13 @@
 desc: Translate VR-730 SysEx outputs to MIDI CC. Control your VSTs with your keyboard like you'd expect.
+
 @init
 sysex_status_byte=0xF0;
 cc_status_byte=0xB0;
+
 drawbar_scale_factor=16;
 output_channel=0x00;
 drawbar_cc_start_num=0x0C;
+
 @block
 buf = 10000;
 maxlen = 65536;

@@ -1,6 +1,6 @@
 ## V-Combo SysEx Translator
 
-Frustrated that your brand new keyboard doesn't work as a MIDI controller the way you'd expect it to? Use this plugin to translate MIDI SysEx messages output by Roland V-Combo keyboards to MIDI CC messages that are usable for controlling other plugins.
+Frustrated that your brand new keyboard doesn't work as a MIDI controller the way you'd expect it to? Use this plugin to translate MIDI SysEx messages output by Roland V-Combo keyboard drawbars and knobs to MIDI CC messages that are usable for controlling other plugins.
 
 Tested on VR-730, but should work on VR-09 or VR-09B. If you've tested this plugin with any other devices and have found it works, please open a pull request to update the compatibility list.
 

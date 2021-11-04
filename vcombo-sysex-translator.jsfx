@@ -11,7 +11,8 @@ drawbar_cc_start_num=0x0C;
 @block
 buf = 10000;
 maxlen = 65536;
-while ((recvlen = midirecv_buf(offset,buf,maxlen)) > 0) (
+
+while ((recvlen = midirecv_buf(offset, buf, maxlen)) > 0) (
     b01_status_byte=buf[0];
     b08_control_index=buf[7];
     b09_control_val=buf[8];
@@ -19,6 +20,7 @@ while ((recvlen = midirecv_buf(offset,buf,maxlen)) > 0) (
     
     // SysEx:
     b01_status_byte == sysex_status_byte ? (
+
         // Drawbars:
         b08_control_index>=3 && b08_control_index<=11 ? (
             drawbar_index = b08_control_index-3;
@@ -33,6 +35,7 @@ while ((recvlen = midirecv_buf(offset,buf,maxlen)) > 0) (
                 drawbar_value
             );
         ) : (
+        
           // Knobs:
           // "Overdrive" knob:
           b08_control_index == 63 ? (
@@ -56,6 +59,7 @@ while ((recvlen = midirecv_buf(offset,buf,maxlen)) > 0) (
           );
           // "Reverb" knob:
           // TODO. This knob behaves differently than all the other knobs!
+          
           midisend(
               offset,
               cc_status_byte + output_channel,
@@ -63,6 +67,7 @@ while ((recvlen = midirecv_buf(offset,buf,maxlen)) > 0) (
               b09_control_val
           )
         )
+
     ) : (
         midisend_buf(offset,buf,recvlen); // passthrough other events
     )

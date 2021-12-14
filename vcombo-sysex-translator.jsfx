@@ -1,32 +1,30 @@
-desc: Translate VR-730 SysEx outputs to MIDI CC. Control your VSTs with your keyboard like you'd expect.
+desc: V-Combo SysEx to MIDI CC
 
 @init
 sysex_status_byte=0xF0;
 cc_status_byte=0xB0;
 
-drawbar_scale_factor=16;
+drawbar_scale_factor=16; // Drawbars send values 0-8 but must be scaled to 0-127
 output_channel=0x00;
 drawbar_cc_start_num=0x0C;
 
 @block
 buf = 10000;
 maxlen = 65536;
-
 while ((recvlen = midirecv_buf(offset, buf, maxlen)) > 0) (
     b01_status_byte=buf[0];
     b08_control_index=buf[7];
     b09_control_val=buf[8];
     b10_checksum=buf[9];
-    
-    // SysEx:
-    b01_status_byte == sysex_status_byte ? (
 
-        // Drawbars:
-        b08_control_index>=3 && b08_control_index<=11 ? (
-            drawbar_index = b08_control_index-3;
+    //// SysEx:
+    b01_status_byte == sysex_status_byte ? (
+        //// Drawbars:
+        b08_control_index >= 3 && b08_control_index <= 11 ? ( // between 0x03 and 0x0B
+            drawbar_index = b08_control_index - 3;
             drawbar_value = b09_control_val * drawbar_scale_factor;
             drawbar_value > 127 ? (
-              drawbar_value = 127;
+                drawbar_value = 127;
             );
             midisend(
                 offset,
@@ -35,39 +33,58 @@ while ((recvlen = midirecv_buf(offset, buf, maxlen)) > 0) (
                 drawbar_value
             );
         ) : (
-        
-          // Knobs:
+          //// Buttons:
+          // NOTE: Buttons send weird double-messages. This isn't handled gracefully.
+          // "Percussion" button:
+          b08_control_index == 0x0D ? (
+              b09_control_val == 2 ? (
+                  b09_control_val = 127;
+              );
+              cc_num = 70;
+          );
+          // "Vibrato/Chorus" button:
+          b08_control_index == 0x37 ? (
+              b09_control_val == 1 ? (
+                  b09_control_val = 127;
+              );
+              cc_num = 71;
+          );
+
+          //// Knobs:
           // "Overdrive" knob:
-          b08_control_index == 63 ? (
+          b08_control_index == 0x3F ? (
               cc_num = 75;
           );
           // "Tone" knob:
-          b08_control_index == 97 ? (
+          b08_control_index == 0x61 ? (
               cc_num = 76;
           );
           // "Compressor" knob:
-          b08_control_index == 98 ? (
+          b08_control_index == 0x62 ? (
               cc_num = 77;
           );
           // "MFX" knob:
-          b08_control_index == 94 ? (
+          b08_control_index == 0x5E ? (
               cc_num = 78;
           );
           // "Delay" knob:
-          b08_control_index == 96 ? (
+          b08_control_index == 0x60 ? (
               cc_num = 79;
           );
           // "Reverb" knob:
           // TODO. This knob behaves differently than all the other knobs!
-          
-          midisend(
-              offset,
-              cc_status_byte + output_channel,
-              cc_num,
-              b09_control_val
-          )
-        )
 
+
+          cc_num != 0 ? (
+              midisend(
+                  offset,
+                  cc_status_byte + output_channel,
+                  cc_num,
+                  b09_control_val
+              );
+              cc_num = 0;
+          );
+        )
     ) : (
         midisend_buf(offset,buf,recvlen); // passthrough other events
     )

@@ -40,14 +40,14 @@ while ((recvlen = midirecv_buf(offset, buf, maxlen)) > 0) (
               b09_control_val == 2 ? (
                   b09_control_val = 127;
               );
-              cc_num = 70;
+              cc_num = 102;
           );
           // "Vibrato/Chorus" button:
           b08_control_index == 0x37 ? (
               b09_control_val == 1 ? (
                   b09_control_val = 127;
               );
-              cc_num = 71;
+              cc_num = 106;
           );
 
           //// Knobs:

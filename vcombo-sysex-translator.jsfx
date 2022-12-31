@@ -18,7 +18,7 @@ while ((recvlen = midirecv_buf(offset, buf, maxlen)) > 0) (
     b08_control_index = buf[7];
     b09_control_val = buf[8];
     b10_checksum = buf[9];
-    
+
     //// SysEx:
     b01_status_byte == sysex_status_byte ? (
         //// Drawbars:
@@ -51,7 +51,7 @@ while ((recvlen = midirecv_buf(offset, buf, maxlen)) > 0) (
               );
               cc_num = 106;
           );
-          
+
           //// Knobs:
           // "Overdrive" knob:
           b08_control_index == 0x3F ? (
@@ -75,8 +75,8 @@ while ((recvlen = midirecv_buf(offset, buf, maxlen)) > 0) (
           );
           // "Reverb" knob:
           // TODO. This knob behaves differently than all the other knobs!
-          
-          
+
+
           cc_num != 0 ? (
               midisend(
                   offset,

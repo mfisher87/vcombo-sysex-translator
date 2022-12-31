@@ -1,5 +1,7 @@
 desc: V-Combo SysEx to MIDI CC
 
+// TODO: Set fast/slow rotary button (currently sets 16' drawbar to 0/1)
+
 @init
 sysex_status_byte=0xF0;
 cc_status_byte=0xB0;
@@ -12,11 +14,11 @@ drawbar_cc_start_num=0x0C;
 buf = 10000;
 maxlen = 65536;
 while ((recvlen = midirecv_buf(offset, buf, maxlen)) > 0) (
-    b01_status_byte=buf[0];
-    b08_control_index=buf[7];
-    b09_control_val=buf[8];
-    b10_checksum=buf[9];
-
+    b01_status_byte = buf[0];
+    b08_control_index = buf[7];
+    b09_control_val = buf[8];
+    b10_checksum = buf[9];
+    
     //// SysEx:
     b01_status_byte == sysex_status_byte ? (
         //// Drawbars:
@@ -49,7 +51,7 @@ while ((recvlen = midirecv_buf(offset, buf, maxlen)) > 0) (
               );
               cc_num = 106;
           );
-
+          
           //// Knobs:
           // "Overdrive" knob:
           b08_control_index == 0x3F ? (
@@ -73,8 +75,8 @@ while ((recvlen = midirecv_buf(offset, buf, maxlen)) > 0) (
           );
           // "Reverb" knob:
           // TODO. This knob behaves differently than all the other knobs!
-
-
+          
+          
           cc_num != 0 ? (
               midisend(
                   offset,
